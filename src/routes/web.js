@@ -8,7 +8,7 @@ import initPassportFacebook from "../controllers/passportController/facebook"
 import initPassportGoogle from "../controllers/passportController/google"
 
 
-//init all passport
+//init all passportt
 initPassportLocal();
 initPassportFacebook();
 initPassportGoogle();
