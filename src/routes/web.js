@@ -52,6 +52,7 @@ let initRoutes = (app) =>{
     router.get("/contact/read-more-contacts-sent", auth.checkLoggedIn ,contactController.readMoreContactsSent)
     router.get("/contact/read-more-contacts-received", auth.checkLoggedIn ,contactController.readMoreContactsReceived)
     router.get("/contact/search-friends/:keyword", auth.checkLoggedIn, contactValid.searchFriends ,contactController.searchFriends)
+    router.get("/contact/find-more-friends-to-add-groupChat/:keyword", auth.checkLoggedIn ,contactController.findMoreFriendsToAddGroup)
 
     router.get("/notification/read-more", auth.checkLoggedIn, notificationController.readMore )
     router.put("/notification/mark-all-as-read", auth.checkLoggedIn, notificationController.markAllAsRead )
@@ -60,13 +61,16 @@ let initRoutes = (app) =>{
     router.post("/message/add-new-image", auth.checkLoggedIn, message.addNewImage)
     router.post("/message/add-new-attachment", auth.checkLoggedIn, message.addNewAttachment)
     router.get("/message/read-more-all-chat", auth.checkLoggedIn, message.readMoreAllChat)
+    router.get("/message/read-more-personal-chat", auth.checkLoggedIn, message.readMorePersonalChat)
+    router.get("/message/read-more-group-chat", auth.checkLoggedIn, message.readMoreGroupChat)
+
     router.get("/message/read-more", auth.checkLoggedIn, message.readMore)
+    router.get("/message/find-conversations/:keyword", auth.checkLoggedIn, message.findConversations)
 
-    
     router.post("/group-chat/add-new", auth.checkLoggedIn, groupChatValid.addNewGroup, groupChat.addNewGroup)
+    router.put("/group-chat/add-more", auth.checkLoggedIn,  groupChat.addMoreMembersForGroup)
+    router.get("/group-chat/read-more", auth.checkLoggedIn,  groupChat.readMoreMembersInGroup)
 
-
-    
     return app.use("/", router);
 }
 

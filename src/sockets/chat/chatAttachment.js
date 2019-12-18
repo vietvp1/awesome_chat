@@ -16,6 +16,9 @@ let chatAttachment = (io) => {
         socket.on("member-received-group-chat", (data) => {
             clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
         });
+        socket.on("newMember-received-group-chat", (data) => {
+            clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
+        });
 
         socket.on("chat-attachment" , (data) => {
             if (data.groupId) {

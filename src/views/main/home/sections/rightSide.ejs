@@ -25,8 +25,9 @@
                             <a href="javascript:void(0)">&nbsp;</a>
                         </span>
                         <span class="chat-menu-right">
-                            <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+                            <a href="#membersModal_<%= conversation._id %>" class="number-members" data-toggle="modal">
                                 <span class="show-number-members"><%= conversation.userAmount %></span> 
+                                <span style="color: #2C3E50;">Thành viên</span>
                                 <i class="fa fa-users"></i>
                             </a>
                         </span>
@@ -36,6 +37,7 @@
                         <span class="chat-menu-right">
                             <a href="javascript:void(0)" class="number-messages" data-toggle="modal">
                                 <span class="show-number-messages"><%= conversation.messageAmount %></span> 
+                                <span style="color: #2C3E50;">Tin nhắn</span>
                                 <i class="fa fa-comment-o"></i>
                             </a>
                         </span>
@@ -61,6 +63,7 @@
                                             class="avatar-small" title="<%= message.sender.name %>">
                                             <img src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>" 
                                             class="show-image-chat">
+
                                     </div>
                                 <% } %>
 
@@ -137,6 +140,8 @@
                                             
                                             <img src="data:<%= message.file.contentType %>; base64, <%= bufferToBase64(message.file.data) %>" 
                                             class="show-image-chat">
+
+                                            
                                     </div>
                                 <% } %>
 

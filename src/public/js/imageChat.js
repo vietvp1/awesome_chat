@@ -84,6 +84,9 @@ function imageChat(divId) {
                 let imageChatToAddModal = `<img src="data:${data.message.file.contentType}; base64, ${bufferToBase64(data.message.file.data.data)}">`;
                 $(`#imagesModal_${divId}`).find("div.all-images").append(imageChatToAddModal);
 
+                //step 10: zoom image
+                zoomImageChat();
+
             },
             error: function(error) {
                 alertify.notify(error.responseText, "error", 7);
@@ -99,7 +102,7 @@ $(document).ready(function () {
         // Step 1
         let messageOfYou = $(`<div class="bubble you bubble-image-file" data-mess-id="${response.message._id}"></div>`);
         let imageChat = `<img src="data:${response.message.file.contentType}; base64, ${bufferToBase64(response.message.file.data.data)}" 
-                                class="show-image-chat">`;
+                                class="show-image-chat" >`;
 
         if (response.currentGroupId) {
             let senderAvatar =  `<img src="/images/users/${response.message.sender.avatar}"
@@ -132,7 +135,7 @@ $(document).ready(function () {
         //Step5 move conversation to the top
         $(`.person[data-chat = ${divId}]`).on("vietanhdev.moveConversationToTheTop", function() {
             let dataToMove = $(this).parent();
-            $(this).closest("ul").prepend(dataToMove);
+            $(this).closest("div").prepend(dataToMove);
             $(this).off("vietanhdev.moveConversationToTheTop");
         });
         $(`.person[data-chat = ${divId}]`).trigger("vietanhdev.moveConversationToTheTop");
@@ -142,5 +145,8 @@ $(document).ready(function () {
             let imageChatToAddModal = `<img src="data:${response.message.file.contentType}; base64, ${bufferToBase64(response.message.file.data.data)}">`;
             $(`#imagesModal_${divId}`).find("div.all-images").append(imageChatToAddModal);
         }
+
+        //step 10: zoom image
+        zoomImageChat();
     });
 })

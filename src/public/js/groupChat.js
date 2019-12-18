@@ -13,7 +13,7 @@ function addFriendsToGroup() {
         $('ul#group-chat-friends').find('div[data-uid=' + uid + ']').remove();
       });
     });
-  }
+}
   
 function cancelCreateGroup() {
     $('#btn-cancel-group-chat').bind('click', function() {
@@ -290,8 +290,9 @@ $(document).ready(function () {
                     <a href="javascript:void(0)">&nbsp;</a>
                 </span>
                 <span class="chat-menu-right">
-                    <a href="javascript:void(0)" class="number-members" data-toggle="modal">
+                    <a href="#membersModal_${response.groupChat._id}" class="number-members" data-toggle="modal">
                         <span class="show-number-members">${response.groupChat.userAmount}</span> 
+                        <span style="color: #2C3E50;">Thành viên</span>
                         <i class="fa fa-users"></i>
                     </a>
                 </span>
@@ -301,6 +302,7 @@ $(document).ready(function () {
                 <span class="chat-menu-right">
                     <a href="javascript:void(0)" class="number-messages" data-toggle="modal">
                         <span class="show-number-messages">${response.groupChat.messageAmount}</span> 
+                        <span style="color: #2C3E50;">Tin nhắn</span>
                         <i class="fa fa-comment-o"></i>
                     </a>
                 </span>
@@ -373,7 +375,7 @@ $(document).ready(function () {
 
         //step 8: emit new group created: nothing to code
         
-        //step 9: emit when member received a group chat
+        //step 9: emit when member đã nhận được a group chat
         socket.emit("member-received-group-chat", {groupChatId: response.groupChat._id});
 
         //step 10:update online

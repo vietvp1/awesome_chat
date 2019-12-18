@@ -1,36 +1,37 @@
 import {notification, contact, message} from '../services/index'
 import {bufferToBase64, lastItemOfArray, convertTimestampToHumanTime} from "../helpers/clientHelper" 
-import request from "request"
 
 let getICETurnServer = () => {
     return new Promise((resolve, reject) => {
         // Node Get ICE STUN and TURN list
-        let o = {
-            format: "urls"
-        };
 
-        let bodyString = JSON.stringify(o);
-        let options = {
-            url: "https://global.xirsys.net/_turn/awesome-chat",
-            // host: "global.xirsys.net",
-            // path: "/_turn/awesome-chat",
-            method: "PUT",
-            headers: {
-                "Authorization": "Basic " + Buffer.from("vietvp1:be09d142-174e-11ea-82f4-0242ac110004").toString("base64"),
-                "Content-Type": "application/json",
-                "Content-Length": bodyString.length
-            }
-        };
-        // call a request to get ICE list turn server
-        request(options, function (error, response, body) {
-            if (error) {
-                console.log("Error when get ICE list: "+ error);
-                return reject(error);
-            }
-            let bodyJson = JSON.parse(body);
-            resolve(bodyJson.v.iceServers);
-        })
-        //resolve([]) 
+        // let o = {
+        //     format: "urls"
+        // };
+
+        // let bodyString = JSON.stringify(o);
+        // let options = {
+        //     url: "https://global.xirsys.net/_turn/awesome-chat",
+        //     // host: "global.xirsys.net",
+        //     // path: "/_turn/awesome-chat",
+        //     method: "PUT",
+        //     headers: {
+        //         "Authorization": "Basic " + Buffer.from("vietvp1:be09d142-174e-11ea-82f4-0242ac110004").toString("base64"),
+        //         "Content-Type": "application/json",
+        //         "Content-Length": bodyString.length
+        //     }
+        // };
+        // // call a request to get ICE list turn server
+        // request(options, function (error, response, body) {
+        //     if (error) {
+        //         console.log("Error when get ICE list: "+ error);
+        //         return reject(error);
+        //     }
+        //     let bodyJson = JSON.parse(body);
+        //     resolve(bodyJson.v.iceServers);
+        // })
+        
+        resolve([]) 
     })
 }
 
@@ -53,8 +54,11 @@ let getHome = async (req, res) => {
     let countAllContactsReceived = await contact.countAllContactsReceived(req.user._id)
     
     let getAllConversationItems = await message.getAllConversationItems(req.user._id);
+
     // all messages with conversations
     let allConversationWithMessages = getAllConversationItems.allConversationWithMessages;
+    // let userConversationWithMessages = getAllConversationItems.userConversationWithMessages;
+    // let groupConversationWithMessages = getAllConversationItems.groupConversationWithMessages;
     
     //get ICE list from xirsys turn server
     let iceServerList = await getICETurnServer();

@@ -16,6 +16,9 @@ let chatVideo = (io) => {
         socket.on("member-received-group-chat", (data) => {
             clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
         });
+        socket.on("newMember-received-group-chat", (data) => {
+            clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
+        });
 
         socket.on("call-check-listener-online-or-not" , (data) => {
             if (clients[data.listenerId]) {

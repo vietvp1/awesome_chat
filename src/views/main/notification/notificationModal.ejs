@@ -12,21 +12,19 @@
                         </a>
                 </div>
                 <hr>
-                <ul class="list-notifications">
-                    <% notifications.forEach(function (notification) { %>
-                        <li>
-                            <%- notification %>
-                        </li>
-                    <% }) %>
-                </ul>
-                <hr>
+                <div class="scroll-notif">
+                    <div class="list-notifications">
+                        <% notifications.forEach(function (notification) { %>
+                            <li>
+                                <%- notification %>
+                            </li>
+                        <% }) %>
+                    </div>
+                </div>
+                
                 <div class="read-more-notif">
-                    <a href="javascript:void(0)" id="link-read-more-notif">
-                        <strong>Xem thêm</strong> 
-                    </a>
                     <div class="read-more-notif-spinner"></div>
                 </div>
-                <hr>
             </div>
         </div>
     </div>

@@ -57,7 +57,6 @@ let storageImageChat = multer.diskStorage({
         callback(null, imageName);
     },
 })
-
 let ImageMessageUploadFile = multer({
     storage: storageImageChat,
     limits: {fileSize: app.image_message_limit_size }
@@ -104,7 +103,6 @@ let storageAttachmentChat = multer.diskStorage({
         callback(null, attachmentName);
     },
 })
-
 let AttachmentMessageUploadFile = multer({
     storage: storageAttachmentChat,
     limits: {fileSize: app.attachment_message_limit_size }
@@ -146,9 +144,48 @@ let readMoreAllChat = async (req, res) => {
         //get skip number from query param
         let skipPersonal = +(req.query.skipPersonal);
         let skipGroup = +(req.query.skipGroup);
-
+       
         //get more item
         let newAllConversations = await message.readMoreAllChat(req.user._id, skipPersonal, skipGroup);
+        
+        let dataToRender = {
+            newAllConversations: newAllConversations,
+            lastItemOfArray: lastItemOfArray,
+            convertTimestampToHumanTime: convertTimestampToHumanTime,
+            bufferToBase64: bufferToBase64,
+            user: req.user,
+        };
+
+        let leftSideData = await renderFile("src/views/main/readMoreConversations/_leftSide.ejs", dataToRender);
+        let rightSideData = await renderFile("src/views/main/readMoreConversations/_rightSide.ejs", dataToRender);
+        let imageModalData = await renderFile("src/views/main/readMoreConversations/_imageModal.ejs", dataToRender);
+        let attachmentModalData = await renderFile("src/views/main/readMoreConversations/_attachmentModal.ejs", dataToRender);
+        let membersModalData = await renderFile("src/views/main/readMoreConversations/_membersModal.ejs", dataToRender);
+        
+        // ejs.renderFile("src/views/main/readMoreConversations/_leftSide.ejs", dataToRender, {}, function (err, str) {})
+        
+        return res.status(200).send({
+            leftSideData: leftSideData,
+            rightSideData: rightSideData,
+            imageModalData: imageModalData,
+            attachmentModalData: attachmentModalData,
+            membersModalData: membersModalData,
+        });
+        
+    } catch (error) {
+        console.log("vao cn");
+        
+        return res.status(500).send(error);
+    }
+}
+
+let readMorePersonalChat = async (req, res) => {
+    try {
+        //get skip number from query param
+        let skipPersonal = +(req.query.skipPersonal);
+
+        //get more item
+        let newAllConversations = await message.readMorePersonalChat(req.user._id, skipPersonal);
         
         let dataToRender = {
             newAllConversations: newAllConversations,
@@ -171,6 +208,43 @@ let readMoreAllChat = async (req, res) => {
             rightSideData: rightSideData,
             imageModalData: imageModalData,
             attachmentModalData: attachmentModalData,
+        });
+        
+    } catch (error) {
+        return res.status(500).send(error);
+    }
+}
+
+let readMoreGroupChat = async (req, res) => {
+    try {
+        //get skip number from query param
+        let skipGroupChat = +(req.query.skipGroupChat);
+
+        //get more item
+        let newAllConversations = await message.readMoreGroupChat(req.user._id, skipGroupChat);
+        
+        let dataToRender = {
+            newAllConversations: newAllConversations,
+            lastItemOfArray: lastItemOfArray,
+            convertTimestampToHumanTime: convertTimestampToHumanTime,
+            bufferToBase64: bufferToBase64,
+            user: req.user,
+        };
+
+        let leftSideData = await renderFile("src/views/main/readMoreConversations/_leftSide.ejs", dataToRender);
+        let rightSideData = await renderFile("src/views/main/readMoreConversations/_rightSide.ejs", dataToRender);
+        let imageModalData = await renderFile("src/views/main/readMoreConversations/_imageModal.ejs", dataToRender);
+        let attachmentModalData = await renderFile("src/views/main/readMoreConversations/_attachmentModal.ejs", dataToRender);
+        let membersModalData = await renderFile("src/views/main/readMoreConversations/_membersModal.ejs", dataToRender);
+        
+        // ejs.renderFile("src/views/main/readMoreConversations/_leftSide.ejs", dataToRender, {}, function (err, str) {})
+        
+        return res.status(200).send({
+            leftSideData: leftSideData,
+            rightSideData: rightSideData,
+            imageModalData: imageModalData,
+            attachmentModalData: attachmentModalData,
+            membersModalData: membersModalData,
         });
         
     } catch (error) {
@@ -210,10 +284,40 @@ let readMore = async (req, res) => {
     }
 }
 
+let findConversations = async (req, res) => {
+    // let errorArr = [];
+    // let validationErrors = validationResult(req)
+    
+    // if (!validationErrors.isEmpty()) {
+    //     let errors = Object.values(validationErrors.mapped());
+    //     errors.forEach(item => {
+    //         errorArr.push(item.msg)
+    //     })
+    //     console.log(errorArr);
+    //     return res.status(500).send(errorArr)
+    // }
+
+    try {
+        let currentUserId = req.user._id;
+        let keyword = req.params.keyword;
+        
+        let conversations = await message.findConversations(currentUserId, keyword);
+        return res.render("main/navbar/sections/_findConversations", {conversations})
+
+    } catch (error) {
+        console.log("oke");
+        
+        return res.status(500).send(error);
+    }
+}
+
 module.exports = {
     addNewTextEmoji: addNewTextEmoji,
     addNewImage: addNewImage,
     addNewAttachment: addNewAttachment,
     readMoreAllChat: readMoreAllChat,
+    readMorePersonalChat: readMorePersonalChat,
+    readMoreGroupChat: readMoreGroupChat,
     readMore: readMore,
+    findConversations: findConversations,
 }

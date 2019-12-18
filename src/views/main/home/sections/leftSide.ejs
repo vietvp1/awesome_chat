@@ -4,14 +4,14 @@
             <select class="form-control" id="select-type-chat">
                 <option data-target="#all-chat" value="all-chat">Toàn bộ trò chuyện</option>
                 <option data-target="#user-chat" value="user-chat">Trò chuyện cá nhân</option>
-                <option data-target="#group-chat"">Trò chuyện nhóm</option>
+                <option data-target="#group-chat">Trò chuyện nhóm</option>
             </select>
             <a href="#groupChatModal" class="create-group-chat" data-toggle="modal" 
                 title="Tạo một nhóm trò chuyện mới"></a>
         </div>
         <div class="tab-content">
             <div class="tab-pane active" id="all-chat">
-                <ul class="people no-padding-start">
+                <div class="people no-padding-start" id="list-all-chat">
                     <% allConversationWithMessages.forEach(function (conversation) { %> 
                         <% if (conversation.members) { %>
                             <a href="#uid_<%= conversation._id %>" class="room-chat" data-target="#to_<%= conversation._id %>">
@@ -78,18 +78,13 @@
 
                         <% } %>
                     <% }) %>
-                </ul>
-                <hr>
+                </div>
                 <div class="read-more-all-chat">
-                    <a href="javascript:void(0)" id="link-read-more-all-chat">
-                        <strong>Xem thêm</strong> 
-                    </a>
                     <div class="read-more-all-chat-spinner"></div>
                 </div>
-                <hr>
             </div>
             <div class="tab-pane" id="user-chat">
-                <ul class="people no-padding-start">
+                <div class="people no-padding-start" id="list-personal-chat">
                     <% allConversationWithMessages.forEach(function (conversation) { %>
                         <% if (!conversation.members) { %>
                             <a href="#uid_<%= conversation._id %>" class="room-chat" data-target="#to_<%= conversation._id %>">
@@ -123,18 +118,13 @@
                             </a>
                         <% } %>
                     <% }) %>
-                </ul>
-                <hr>
+                </div>
                 <div class="read-more-user-chat">
-                    <a href="javascript:void(0)" id="link-read-more-user-chat">
-                        <strong>Xem thêm</strong> 
-                    </a>
                     <div class="read-more-user-chat-spinner"></div>
                 </div>
-                <hr>
             </div>
             <div class="tab-pane" id="group-chat">
-                <ul class="people no-padding-start">
+                <div class="people no-padding-start" id="list-group-chat">
                     <% allConversationWithMessages.forEach(function (conversation) { %>
                         <% if (conversation.members) { %>
                             <a href="#uid_<%= conversation._id %>" class="room-chat" data-target="#to_<%= conversation._id %>">
@@ -170,15 +160,10 @@
                             </a>
                         <% } %>
                     <% }) %>
-                </ul>
-                <hr>
+                </div>
                 <div class="read-more-group-chat">
-                    <a href="javascript:void(0)" id="link-read-more-group-chat">
-                        <strong>Xem thêm</strong> 
-                    </a>
                     <div class="read-more-group-chat-spinner"></div>
                 </div>
-                <hr>
             </div>
         </div>
         

@@ -1,6 +1,8 @@
 const ContactModel = require('../models/contactModel')
 const UserModel = require('../models/userModel')
 const NotificationModel = require('../models/notificationModel')
+const ChatGroupModel = require('../models/chatGroupModel')
+
 import _ from "lodash";
 const LIMIT = 15;
 
@@ -13,6 +15,7 @@ let findUsersContact = (currentUserId, keyword) => {
                 {"contactId": currentUserId}
             ]
         });
+        
         contactsByUser.forEach((contact) => {
             deprecatedUserIds.push(contact.userId);
             deprecatedUserIds.push(contact.contactId)
@@ -377,12 +380,43 @@ let searchFriends = (currentUserId, keyword) => {
 
         friendIds = _.uniqBy(friendIds);
         friendIds = friendIds.filter(userId => userId != currentUserId)
+        //console.log(friendIds);
+        
 
-        let users = await UserModel.findAllToAddGroupChat(friendIds, keyword);
+        let users = await UserModel.getNormalUserDataByIdAndKeyword(friendIds, keyword);
+        console.log(users);
+        
         resolve(users);
     })
     
 }
+
+let findMoreFriendsToAddGroup = (currentUserId, groupChatId, keyword) => {
+    return new Promise( async (resolve, reject) => {
+        let friendIds = [];
+        let friends = await ContactModel.getFriends(currentUserId);
+
+        friends.forEach((item) => {
+            friendIds.push(item.userId);
+            friendIds.push(item.contactId)
+        });
+        friendIds = _.uniqBy(friendIds);
+        
+        let getChatGroup = await ChatGroupModel.getChatGroupById(groupChatId);
+
+        getChatGroup.members.forEach(member => {
+            friendIds = friendIds.filter(userId => userId != member.userId)
+        })
+
+        //console.log(friendIds);
+        
+        let users = await UserModel.getNormalUserDataByIdAndKeyword(friendIds, keyword);
+        
+        resolve(users);
+    })
+    
+}
+
 module.exports = {
     findUsersContact: findUsersContact,
     addNew: addNew,
@@ -400,4 +434,5 @@ module.exports = {
     readMoreContactsSent: readMoreContactsSent,
     readMoreContactsReceived: readMoreContactsReceived,
     searchFriends: searchFriends,
+    findMoreFriendsToAddGroup: findMoreFriendsToAddGroup,
 }

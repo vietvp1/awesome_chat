@@ -43,6 +43,26 @@ ChatGroupSchema.statics = {
             "members" : {$elemMatch: {"userId": userId}}
         }).sort({"updateAt": -1}).skip(skip).limit(limit);
     },
+
+    getChatGroupsByKeyword(userId, keyword, limit){
+        return this.find({
+            $and: [
+                {"members" : {$elemMatch: {"userId": userId}}},
+                {$or: [
+                    {"name": {"$regex": new RegExp(keyword, "i")}},
+                ]}
+            ]
+        }).sort({"updateAt": -1}).limit(limit);
+    },
+
+    addMoreMembersForGroup(id ,arrayMemberIds, numberOfMembers){
+        return this.findByIdAndUpdate(id, 
+            {
+                "userAmount": numberOfMembers,
+                $push: {"members": {$each : arrayMemberIds }}
+            }
+        )
+    }
 }
 
 module.exports = mongoose.model('chat-group', ChatGroupSchema)

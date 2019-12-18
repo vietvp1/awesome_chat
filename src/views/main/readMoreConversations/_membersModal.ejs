@@ -1,0 +1,76 @@
+<% newAllConversations.forEach(function (conversation, index) { %>
+    <div class="modal fade" id="membersModal_<%= conversation._id %>" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Những thành viên trong cuộc trò chuyện.</h4>
+
+                    <div class="find-users-to-add-member" data-uid="<%= conversation._id %>">
+                        <a href="javascript:void(0)" class="addMembers_Button" id="addMembers_Button_<%= conversation._id %>">
+                            <i class="fa fa-search-plus"></i>
+                        </a>
+                        <span>
+                            <input type="text" class="form-control input-add-members" id="search-more-friends-<%= conversation._id %>" placeholder="Thêm thành viên" />
+                            <span>
+                                <button class="btn-finished-add-members" id="btn-finished-add-members-<%= conversation._id %>">Xong</button>
+                            </span>
+                            <div id="search-more-friends-results">
+                                <div class="search_more_friends_content" data-uid="<%= conversation._id %>">
+                                    <div class="friends-added-more" data-uid="<%= conversation._id %>">
+                                        
+                                    </div>
+
+                                    <ul id="group-chat-more-friends" data-uid="<%= conversation._id %>">
+                                    </ul>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                    
+                </div>
+                <div class="modal-body">
+                    <ul class="list-members row" data-uid="<%= conversation._id %>" >
+                        <% if (conversation.members) { %>
+                            <% conversation.membersInfo.forEach(function (member){ %>
+                                <div class="membersList col-sm-2" data-uid="<%= member._id %>">
+                                    <div class="memberPanel">
+                                        <div class="user-avatar">
+                                            <img src="images/users/<%= member.avatar %>" alt="">
+                                        </div>
+                                        <% if ( member._id == `${user._id}`) { %>
+                                            <div class="user-name">
+                                                <p class="nameOfMember myName">
+                                                    Tôi
+                                                </p>
+                                            </div>
+                                        <% } else { %>
+                                            <div class="user-name">
+                                            <p class="nameOfMember">
+                                                <%= member.username %>
+                                            </p>
+                                            </div>
+                                            <div class="user-talk btn-talk-member" data-uid="<%= member._id %>">
+                                                Trò chuyện 
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } %>
+                    </ul>
+
+                    <hr>
+                    <div class="read-more-members">
+                        <a href="javascript:void(0)" id="link-read-more-members-<%= conversation._id %>" >
+                            <strong>Xem thêm</strong> 
+                        </a>
+                        <div class="read-more-members-spinner" data-uid="<%= conversation._id %>"></div>
+                    </div>
+                    <hr>
+
+                </div>
+            </div>
+        </div>
+    </div>
+<% }) %>

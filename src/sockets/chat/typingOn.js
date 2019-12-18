@@ -16,6 +16,9 @@ let typingOn = (io) => {
         socket.on("member-received-group-chat", (data) => {
             clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
         });
+        socket.on("newMember-received-group-chat", (data) => {
+            clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
+        });
 
         socket.on("user-is-typing" , (data) => {
             if (data.groupId) {

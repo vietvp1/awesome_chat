@@ -11,6 +11,7 @@ import typingOn from "./chat/typingOn"
 import typingOff from "./chat/typingOff"
 import userOnlineOffline from "./status/userOnlineOffline"
 import newGroupChat from "./group/newGroupChat"
+import newMemberAdded from "./group/newMemberAdded"
 
 
 
@@ -28,6 +29,7 @@ let initSockets = (io) => {
     typingOff(io);
     userOnlineOffline(io);
     newGroupChat(io);
+    newMemberAdded(io);
 }
 
 module.exports = initSockets

@@ -16,6 +16,9 @@ let chatTextEmoji = (io) => {
         socket.on("member-received-group-chat", (data) => {
             clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
         });
+        socket.on("newMember-received-group-chat", (data) => {
+            clients = pushSocketIdToArray(clients, data.groupChatId, socket.id);
+        });
 
         socket.on("chat-text-emoji" , (data) => {
             if (data.groupId) {

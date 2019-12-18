@@ -4,8 +4,9 @@
 
 const socket = io();
 
-function nineScrollLeft() {
-  $('.left').niceScroll({
+//all-chat nineScroll
+function nineScrollLeftAllChat() {
+  $('#all-chat').niceScroll({
     smoothscroll: true,
     horizrailenabled: false,
     cursorcolor: '#ECECEC',
@@ -13,9 +14,36 @@ function nineScrollLeft() {
     scrollspeed: 50
   });
 }
+function resizeNineScrollLeftAllChat() {
+  $("#all-chat").getNiceScroll().resize();
+}
 
-function resizeNineScrollLeft() {
-  $(".left").getNiceScroll().resize();
+//users chat scroll
+function nineScrollLeftUsersChat() {
+  $('#user-chat').niceScroll({
+    smoothscroll: true,
+    horizrailenabled: false,
+    cursorcolor: '#ECECEC',
+    cursorwidth: '7px',
+    scrollspeed: 50
+  });
+}
+function resizeNineScrollLeftUsersChat() {
+  $("#user-chat").getNiceScroll().resize();
+}
+
+//group chat scroll
+function nineScrollLeftGroupChat() {
+  $('#group-chat').niceScroll({
+    smoothscroll: true,
+    horizrailenabled: false,
+    cursorcolor: '#ECECEC',
+    cursorwidth: '7px',
+    scrollspeed: 50
+  });
+}
+function resizeNineScrollLeftGroupChat() {
+  $("#group-chat").getNiceScroll().resize();
 }
 
 function nineScrollRight(divId) {
@@ -147,11 +175,15 @@ function changeTypeChat() {
     let optionSelected = $("option:selected", this);
     optionSelected.tab("show");
 
+    resizeNineScrollLeftUsersChat();
     if ($(this).val() === "user-chat") {
       $(".create-group-chat").hide();
-    } else {
+      
+    }else{
+      
       $(".create-group-chat").show();
     }
+
   })
 }
 
@@ -160,7 +192,7 @@ function changeScreenChat() {
     let divId = $(this).find("li").data("chat");
 
     $(".person").removeClass("active")
-    $(`.person[data-uid = ${divId}]`).addClass("active")
+    $(`.person[data-chat = ${divId}]`).addClass("active")
     $(this).tab("show")
     // cấu hình thanh cuộn bên box chat rightSide.js mỗi khi click chuột vào 1 cuộc trò chuyện cụ thể
     nineScrollRight(divId);
@@ -176,6 +208,13 @@ function changeScreenChat() {
 
     // Bật lắng nghe dom cho việc video chat
     videoChat(divId);
+
+    //icon add more member
+    configAddMembersInGroup(divId);
+
+    findMoreFriendsToAddGroup(divId);
+
+    readMoreMembers(divId);
   })
 }
 
@@ -186,6 +225,34 @@ function bufferToBase64(buffer) {
       );
 }
 
+function zoomImageChat() {
+  let abc = `
+    <div id="img-chat-modal">
+        <span class="close">&times;</span>
+        <img id="img-chat-modal-content">
+    </div>
+  `
+  $(".show-image-chat").unbind("click").on("click", function () {
+    $(this).parent().append(abc)
+    $(this).parent().find("div").css("display", "block");
+    $(this).parent().find("div img").attr("src", $(this)[0].src);
+
+    $(this).parent().find("div").on("click", function () {
+      $(this).remove();
+    })
+  })
+}
+  
+function userTalk() {
+  $(".user-talk").unbind("click").on("click", function () {
+    let dataChat = $(this).data("uid");
+    $("ul.people").find(`a[href="#uid_${dataChat}"]`).click();
+    $(this).closest("div.modal").modal("hide");
+  })
+}
+
+
+
 $(document).ready(function() {
   // Hide số thông báo trên đầu icon mở modal contact
   showModalContacts();
@@ -194,7 +261,11 @@ $(document).ready(function() {
   configNotification();
 
   // Cấu hình thanh cuộn
-  nineScrollLeft();
+  nineScrollLeftAllChat();
+  resizeNineScrollLeftAllChat();
+  
+  nineScrollLeftUsersChat();
+  nineScrollLeftGroupChat();
 
   // Icon loading khi chạy ajax
   ajaxLoading();
@@ -212,11 +283,30 @@ $(document).ready(function() {
   //thay đổi màn hình chat
   changeScreenChat();
 
+  //click vào từng ảnh tron cuộc trò chuyện thì phóng to ảnh lên
+  zoomImageChat();
+
+  //click vào trò chuyện trong modal contact thì di chuyển đến cuộc trò chuyện
+  userTalk();
+
+
   //click vào phần tử đầu tiên khi load trang web
   if ($("ul.people").find("a").length) {
     $("ul.people").find("a")[0].click();
   }
-  
+
+  if (!$("div.people").find("a").length) {
+    Swal.fire({
+      title: 'Bạn chưa có bạn bè, hãy tìm kiếm bạn bè để trò chuyện?',
+      type: 'info',
+      showCancelButton: false,
+      confirmButtonColor: '#2ECC71',
+      confirmButtonText: 'Xác nhận',  
+    }).then((result) => {
+      $("#contactsModal").modal("show");
+    })
+  }
+
   $("#video-chat-group").bind('click', function () {
     alertify.notify("Không khả dụng tính năng này với nhóm trò chuyện, thử lại với trò chuyện cá nhân.", "error" , 7);
   })

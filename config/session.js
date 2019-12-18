@@ -11,7 +11,7 @@ let configSession = (app) => {
         resave: false, 
         saveUninitialized: false,
         store: sessionStore,
-        cookie: { maxAge: 180 * 60 * 1000 }
+        cookie: { maxAge: 180 * 60 * 1000 * 24 }
     }))
 }
 

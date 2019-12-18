@@ -42,6 +42,9 @@ function readMoreMessages() {
                 //step 7: remove message loading
                 thisDOM.find("img.message-loading").remove();
 
+                //step 8: zoom image
+                zoomImageChat();
+
             });
         }
     });

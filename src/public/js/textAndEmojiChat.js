@@ -13,6 +13,7 @@ function textAndEmojiChat(divId) {
                 uid: targetId,
                 messageVal: messageVal,
             }
+            
 
             if ($(`#write-chat-${divId}`).hasClass("chat-in-group")) {
                 dataTextEmojiForSend.isChatGroup = true;
@@ -55,7 +56,7 @@ function textAndEmojiChat(divId) {
                 //Step5 move conversation to the top
                 $(`.person[data-chat = ${divId}]`).on("vietanhdev.moveConversationToTheTop", function() {
                     let dataToMove = $(this).parent();
-                    $(this).closest("ul").prepend(dataToMove);
+                    $(this).closest("div").prepend(dataToMove);
                     $(this).off("vietanhdev.moveConversationToTheTop");
                 });
                 $(`.person[data-chat = ${divId}]`).trigger("vietanhdev.moveConversationToTheTop");

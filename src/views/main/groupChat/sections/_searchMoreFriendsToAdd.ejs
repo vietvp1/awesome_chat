@@ -1,0 +1,17 @@
+<% users.forEach(function(user) { %>
+    <div data-uid="<%= user._id %>">
+        <li data-uid="<%= user._id %>">
+            <div class="contactPanel">
+                <div class="find-more-user-avatar">
+                    <img src="images/users/<%= user.avatar %>" alt="">
+                </div>
+                <span class="user-name">
+                    <%= user.username %>
+                </span>
+                <span class="add-more-user" data-uid="<%= user._id %>">
+                    <i class="fa fa-check-circle"></i>
+                </span>
+            </div>
+        </li>
+    </div>
+<% }) %>

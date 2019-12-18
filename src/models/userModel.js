@@ -39,24 +39,47 @@ UserSchema.statics = {
         return this.findById(id, {"local.password": 0});
     },
 
+    //lấy 1 user
     getNormalUserDataById(id) {
         return this.findById(id, {_id: 1, username: 1, address: 1, avatar: 1});
     },
 
-    findAllToAddGroupChat(friendIds, keyword){
+    //lấy nhiều user by array id and keyword
+    getNormalUserDataByIdAndKeyword(friendIds, keyword){
         return this.find({
             $and: [
                 {"_id": {$in: friendIds}},
                 {"local.isActive": true},
                 {$or: [
                     {"username": {"$regex": new RegExp(keyword, "i")}},
-                    {"local.email": {"$regex": new RegExp(keyword, "i")}},
-                    {"facebook.email": {"$regex": new RegExp(keyword, "i")}},
-                    {"google.email": {"$regex": new RegExp(keyword, "i")}}
+                    // {"local.email": {"$regex": new RegExp(keyword, "i")}},
+                    // {"facebook.email": {"$regex": new RegExp(keyword, "i")}},
+                    // {"google.email": {"$regex": new RegExp(keyword, "i")}}
                 ]}
             ]
         }, {_id: 1, username: 1, address: 1, avatar: 1});
-    }
+    },
+
+    //lấy nhiều user by array id 
+    getNormalUsersDataById(UserIds){
+        return this.find({
+            $and: [
+                {"_id": {$in: UserIds}},
+                {"local.isActive": true},
+            ]
+        }, {_id: 1, username: 1, address: 1, avatar: 1});
+    },
+
+    //lấy nhiều user by array id và có giới hạn limit
+    getNormalUsersDataByIdsAndLimit(UserIds, limit){
+        return this.find({
+            $and: [
+                {"_id": {$in: UserIds}},
+                {"local.isActive": true},
+            ]
+        }, {_id: 1, username: 1, address: 1, avatar: 1}).limit(limit);
+    },
+
 }
 
 UserSchema.methods = {
