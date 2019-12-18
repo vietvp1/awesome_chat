@@ -7,7 +7,7 @@ import {app} from "../../config/app"
 import _ from "lodash"
 import fsExtra from "fs-extra"
 
-const LIMIT_CONVERSATIONS_TAKEN = 6;
+const LIMIT_CONVERSATIONS_TAKEN = 25;
 const LIMIT_MESSAGES_TAKEN = 30;
 const LIMIT_MEMBERS_TAKEN = 19;
 
